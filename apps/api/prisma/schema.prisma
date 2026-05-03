@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  username      String         @unique
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  records       Record[]
+  wishlistItems WishlistItem[]
+}
+
+model Record {
+  id            String    @id @default(cuid())
+  discogsId     String?
+  title         String
+  artist        String
+  label         String?
+  year          Int?
+  genre         String[]
+  style         String[]
+  format        String?
+  coverUrl      String?
+  notes         String?
+  condition     Condition?
+  purchaseDate  DateTime?
+  purchasePrice Float?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  discogsId String?
+  title     String
+  artist    String
+  coverUrl  String?
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Condition {
+  MINT
+  NEAR_MINT
+  VERY_GOOD_PLUS
+  VERY_GOOD
+  GOOD_PLUS
+  GOOD
+  FAIR
+  POOR
+}
