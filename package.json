@@ -11,7 +11,8 @@
     "build:web": "npm run build --workspace=apps/web",
     "db:migrate": "npm run prisma migrate dev --workspace=apps/api",
     "db:generate": "npm run prisma generate --workspace=apps/api",
-    "db:studio": "npm run prisma studio --workspace=apps/api"
+    "db:studio": "npm run prisma studio --workspace=apps/api",
+    "db:seed": "npm run prisma db seed --workspace=apps/api"
   },
   "devDependencies": {
     "concurrently": "^9.0.0"
