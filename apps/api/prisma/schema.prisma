@@ -14,19 +14,17 @@ model User {
   username      String         @unique
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
-  records       Record[]
+  albums        Album[]
   wishlistItems WishlistItem[]
 }
 
-model Record {
+model Album {
   id            String    @id @default(cuid())
   discogsId     String?
   title         String
   artist        String
   label         String?
   year          Int?
-  genre         String[]
-  style         String[]
   format        String?
   coverUrl      String?
   notes         String?
@@ -37,6 +35,32 @@ model Record {
   updatedAt     DateTime  @updatedAt
   userId        String
   user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tracks        Track[]
+  tags          TagsOnAlbums[]
+}
+
+model Track {
+  id       String  @id @default(cuid())
+  position String?
+  title    String
+  duration String?
+  albumId  String
+  album    Album   @relation(fields: [albumId], references: [id], onDelete: Cascade)
+}
+
+model Tag {
+  id     String         @id @default(cuid())
+  name   String         @unique
+  albums TagsOnAlbums[]
+}
+
+model TagsOnAlbums {
+  albumId String
+  tagId   String
+  album   Album  @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  tag     Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([albumId, tagId])
 }
 
 model WishlistItem {
