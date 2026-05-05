@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../api/client';
 import { Spinner } from '../components/Spinner';
+import { normalize } from '../utils/string';
 
 interface SearchResult {
   id: number;
@@ -128,10 +129,6 @@ interface ItunesResult {
   trackName: string;
   artistName: string;
   collectionName: string;
-}
-
-function normalize(s: string) {
-  return s.toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 function useItunesPreview(artist: string, albumTitle: string, enabled: boolean) {
@@ -317,6 +314,10 @@ export function HomePage() {
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current); };
+  }, []);
 
   const { data, isFetching, isError } = useDiscogsSearch(query);
 

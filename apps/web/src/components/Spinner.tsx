@@ -1,4 +1,9 @@
-export function Spinner({ size = 'md', className = '' }: { size?: 'sm' | 'md' | 'lg'; className?: string }) {
+interface SpinnerProps {
+  size?: 'sm' | 'md' | 'lg';
+  className?: string;
+}
+
+export function Spinner({ size = 'md', className = '' }: SpinnerProps) {
   const s = { sm: 'w-4 h-4', md: 'w-6 h-6', lg: 'w-10 h-10' }[size];
   return (
     <svg className={`animate-spin text-orange-400 ${s} ${className}`} viewBox="0 0 24 24" fill="none">
