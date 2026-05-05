@@ -6,8 +6,12 @@ export class DiscogsController {
   constructor(private readonly discogsService: DiscogsService) {}
 
   @Get('search')
-  search(@Query('q') query: string, @Query('page') page = '1') {
-    return this.discogsService.search(query, Number(page));
+  search(
+    @Query('q') query: string,
+    @Query('page') page = '1',
+    @Query('type') type?: string,
+  ) {
+    return this.discogsService.search(query, Number(page), type);
   }
 
   @Get('release/:id')

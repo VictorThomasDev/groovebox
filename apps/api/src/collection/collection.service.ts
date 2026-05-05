@@ -6,23 +6,22 @@ export class CollectionService {
   constructor(private readonly prisma: PrismaService) {}
 
   findAll(_userId: string) {
-    // TODO: return this.prisma.record.findMany({ where: { userId } })
-    return [];
+    // TODO
   }
 
   findOne(_id: string) {
-    // TODO: return this.prisma.record.findUniqueOrThrow({ where: { id } })
+    // TODO
   }
 
   create(_dto: unknown) {
-    // TODO: return this.prisma.record.create({ data: dto })
+    // TODO
   }
 
   update(_id: string, _dto: unknown) {
-    // TODO: return this.prisma.record.update({ where: { id }, data: dto })
+    // TODO
   }
 
   remove(_id: string) {
-    // TODO: return this.prisma.record.delete({ where: { id } })
+    // TODO
   }
 }
