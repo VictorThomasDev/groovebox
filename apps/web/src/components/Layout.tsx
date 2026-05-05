@@ -1,9 +1,9 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from "react-router-dom";
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   isActive
-    ? 'text-orange-400 font-medium'
-    : 'text-gray-400 hover:text-white transition-colors';
+    ? "text-orange-400 font-medium"
+    : "text-gray-400 hover:text-white transition-colors";
 
 export function Layout() {
   return (

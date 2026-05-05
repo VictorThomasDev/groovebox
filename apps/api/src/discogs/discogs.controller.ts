@@ -10,8 +10,9 @@ export class DiscogsController {
     @Query('q') query: string,
     @Query('page') page = '1',
     @Query('type') type?: string,
+    @Query('format') format?: string,
   ) {
-    return this.discogsService.search(query, Number(page), type);
+    return this.discogsService.search(query, Number(page), type, format);
   }
 
   @Get('release/:id')

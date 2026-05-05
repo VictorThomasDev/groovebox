@@ -95,9 +95,11 @@ export class DiscogsService {
     query: string,
     page = 1,
     type?: string,
+    format?: string,
   ): Promise<DiscogsSearchResponse> {
     const params = new URLSearchParams({ q: query, page: String(page) });
     if (type) params.set('type', type);
+    if (format) params.set('format', format);
     return this.fetch<DiscogsSearchResponse>(
       `/database/search?${params.toString()}`,
     );
