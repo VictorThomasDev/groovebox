@@ -6,10 +6,6 @@ export function Layout() {
   const { token, user, logout } = useAuthStore();
   const navigate = useNavigate();
 
-  const today = new Date();
-  const day = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).toUpperCase();
-  const year = today.getFullYear();
-
   function handleLogout() {
     logout();
     navigate('/');
@@ -25,9 +21,6 @@ export function Layout() {
           </NavLink>
 
           <nav className="nav">
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>
-              Home
-            </NavLink>
             {token && (
               <>
                 <NavLink to="/collection" className={({ isActive }) => isActive ? 'active' : ''}>
@@ -44,11 +37,6 @@ export function Layout() {
           </nav>
 
           <div className="topbar-meta">
-            <div className="row">
-              <span>{day}</span>
-              <span className="sep" />
-              <span>{year}</span>
-            </div>
             <div className="sub" style={{ gap: 12 }}>
               {token && user ? (
                 <>
@@ -74,8 +62,7 @@ export function Layout() {
                     Log in
                   </NavLink>
                   <NavLink
-                    to="/login"
-                    onClick={() => {}}
+                    to="/register"
                     style={{
                       background: 'rgba(255,255,255,0.2)', color: 'inherit', textDecoration: 'none',
                       fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: 12,

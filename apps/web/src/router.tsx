@@ -6,6 +6,7 @@ import { LoginPage } from './pages/LoginPage';
 import { CollectionPage } from './pages/CollectionPage';
 import { WishlistPage } from './pages/WishlistPage';
 import { StatsPage } from './pages/StatsPage';
+import { RegisterPage } from './pages/RegisterPage';
 
 export const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'login', element: <LoginPage /> },
+      { path: 'register', element: <RegisterPage /> },
       {
         path: 'collection',
         element: <ProtectedRoute><CollectionPage /></ProtectedRoute>,

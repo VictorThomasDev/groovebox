@@ -8,9 +8,10 @@ interface AuthResponse {
   user: { id: string; email: string; username: string };
 }
 
-export function LoginPage() {
+export function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { setAuth } = useAuthStore();
@@ -21,7 +22,7 @@ export function LoginPage() {
     setError('');
     setLoading(true);
     try {
-      const res = await api.post<AuthResponse>('/api/auth/login', { email, password });
+      const res = await api.post<AuthResponse>('/api/auth/register', { email, password, username });
       setAuth(res.token, res.user);
       navigate('/collection');
     } catch (err: unknown) {
@@ -36,27 +37,28 @@ export function LoginPage() {
       {/* Left — editorial copy */}
       <div>
         <h1 style={{ fontFamily: 'Archivo Black, system-ui', fontSize: 'clamp(40px, 5vw, 72px)', lineHeight: 0.85, letterSpacing: '-0.035em', textTransform: 'uppercase', margin: 0 }}>
-          Welcome<br /><em style={{ fontStyle: 'normal', color: 'var(--primary)' }}>back.</em>
+          Start your<br /><em style={{ fontStyle: 'normal', color: 'var(--primary)' }}>collection.</em>
         </h1>
         <p style={{ fontFamily: 'Inter, sans-serif', fontSize: 17, lineHeight: 1.6, color: 'var(--ink-soft)', fontStyle: 'italic', maxWidth: 420, marginTop: 24 }}>
-          Log in to access your vinyl collection, wishlist and listening stats.
+          Create an account to start cataloguing your vinyl records and tracking your collection.
         </p>
         <NavLink
-          to="/register"
+          to="/login"
           style={{ display: 'inline-block', marginTop: 32, fontFamily: 'JetBrains Mono, monospace', fontSize: 12, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--ink-soft)', textDecoration: 'underline' }}
         >
-          No account? Register →
+          Already have an account? Log in →
         </NavLink>
       </div>
 
       {/* Right — form */}
       <form onSubmit={handleSubmit} style={{ borderTop: '3px solid var(--ink)', paddingTop: 32, display: 'flex', flexDirection: 'column', gap: 0 }}>
         <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 10, letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--ink-faint)', marginBottom: 24 }}>
-          Log in to Groovebox
+          Create account
         </div>
 
+        <Field label="Username" type="text" value={username} onChange={setUsername} placeholder="yourname" autoComplete="username" />
         <Field label="Email" type="email" value={email} onChange={setEmail} placeholder="you@example.com" autoComplete="email" />
-        <Field label="Password" type="password" value={password} onChange={setPassword} placeholder="••••••••" autoComplete="current-password" />
+        <Field label="Password" type="password" value={password} onChange={setPassword} placeholder="••••••••" autoComplete="new-password" />
 
         {error && (
           <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: 11, color: 'var(--primary)', letterSpacing: '0.06em', padding: '10px 0', borderTop: '1px solid var(--primary)' }}>
@@ -70,7 +72,7 @@ export function LoginPage() {
           className="btn btn-primary"
           style={{ marginTop: 24, width: '100%', padding: '18px', fontSize: 15, opacity: loading ? 0.7 : 1 }}
         >
-          {loading ? '…' : 'Log in'}
+          {loading ? '…' : 'Create account'}
         </button>
       </form>
     </div>
