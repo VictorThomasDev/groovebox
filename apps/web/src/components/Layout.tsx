@@ -1,35 +1,57 @@
-import { NavLink, Outlet } from "react-router-dom";
-
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  isActive
-    ? "text-orange-400 font-medium"
-    : "text-gray-400 hover:text-white transition-colors";
+import { NavLink, Outlet } from 'react-router-dom';
+import { Marquee } from './Marquee';
 
 export function Layout() {
+  const today = new Date();
+  const day = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).toUpperCase();
+  const year = today.getFullYear();
+
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      <header className="border-b border-gray-800 px-6 py-4">
-        <nav className="flex items-center gap-8">
-          <span className="text-xl font-bold tracking-tight text-orange-400">
-            Groovebox
-          </span>
-          <NavLink to="/" end className={navLinkClass}>
-            Home
+    <>
+      <header className="topbar">
+        <div className="topbar-inner">
+          <NavLink to="/" className="brand">
+            <div className="brand-word">GROOVEBOX</div>
+            <div className="brand-tag">The beat of<br />your shelf</div>
           </NavLink>
-          <NavLink to="/collection" className={navLinkClass}>
-            Collection
-          </NavLink>
-          <NavLink to="/wishlist" className={navLinkClass}>
-            Wishlist
-          </NavLink>
-          <NavLink to="/stats" className={navLinkClass}>
-            Stats
-          </NavLink>
-        </nav>
+
+          <nav className="nav">
+            {[
+              { to: '/', label: 'Home', end: true },
+              { to: '/collection', label: 'Collection' },
+              { to: '/wishlist', label: 'Wishlist' },
+              { to: '/stats', label: 'Stats' },
+            ].map(({ to, label, end }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={end}
+                className={({ isActive }) => (isActive ? 'active' : '')}
+              >
+                {label}
+              </NavLink>
+            ))}
+          </nav>
+
+          <div className="topbar-meta">
+            <div className="row">
+              <span>{day}</span>
+              <span className="sep" />
+              <span>{year}</span>
+            </div>
+            <div className="sub">
+              <span>33⅓ RPM</span>
+              <span className="globe" aria-hidden="true" />
+            </div>
+          </div>
+        </div>
       </header>
-      <main className="mx-auto max-w-7xl p-6">
+
+      <main>
         <Outlet />
       </main>
-    </div>
+
+      <Marquee />
+    </>
   );
 }
