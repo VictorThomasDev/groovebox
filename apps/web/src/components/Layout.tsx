@@ -1,10 +1,19 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Marquee } from './Marquee';
+import { useAuthStore } from '../store';
 
 export function Layout() {
+  const { token, user, logout } = useAuthStore();
+  const navigate = useNavigate();
+
   const today = new Date();
   const day = today.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }).toUpperCase();
   const year = today.getFullYear();
+
+  function handleLogout() {
+    logout();
+    navigate('/');
+  }
 
   return (
     <>
@@ -16,21 +25,22 @@ export function Layout() {
           </NavLink>
 
           <nav className="nav">
-            {[
-              { to: '/', label: 'Home', end: true },
-              { to: '/collection', label: 'Collection' },
-              { to: '/wishlist', label: 'Wishlist' },
-              { to: '/stats', label: 'Stats' },
-            ].map(({ to, label, end }) => (
-              <NavLink
-                key={to}
-                to={to}
-                end={end}
-                className={({ isActive }) => (isActive ? 'active' : '')}
-              >
-                {label}
-              </NavLink>
-            ))}
+            <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>
+              Home
+            </NavLink>
+            {token && (
+              <>
+                <NavLink to="/collection" className={({ isActive }) => isActive ? 'active' : ''}>
+                  Collection
+                </NavLink>
+                <NavLink to="/wishlist" className={({ isActive }) => isActive ? 'active' : ''}>
+                  Wishlist
+                </NavLink>
+                <NavLink to="/stats" className={({ isActive }) => isActive ? 'active' : ''}>
+                  Stats
+                </NavLink>
+              </>
+            )}
           </nav>
 
           <div className="topbar-meta">
@@ -39,9 +49,44 @@ export function Layout() {
               <span className="sep" />
               <span>{year}</span>
             </div>
-            <div className="sub">
-              <span>33⅓ RPM</span>
-              <span className="globe" aria-hidden="true" />
+            <div className="sub" style={{ gap: 12 }}>
+              {token && user ? (
+                <>
+                  <span style={{ fontWeight: 600 }}>{user.username}</span>
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      background: 'rgba(255,255,255,0.2)', border: 'none', color: 'inherit',
+                      fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: 12,
+                      letterSpacing: '0.1em', textTransform: 'uppercase',
+                      padding: '4px 10px', cursor: 'pointer',
+                    }}
+                  >
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <NavLink
+                    to="/login"
+                    style={{ color: 'inherit', textDecoration: 'none', fontWeight: 600, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}
+                  >
+                    Log in
+                  </NavLink>
+                  <NavLink
+                    to="/login"
+                    onClick={() => {}}
+                    style={{
+                      background: 'rgba(255,255,255,0.2)', color: 'inherit', textDecoration: 'none',
+                      fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: 12,
+                      letterSpacing: '0.1em', textTransform: 'uppercase',
+                      padding: '6px 12px',
+                    }}
+                  >
+                    Register
+                  </NavLink>
+                </>
+              )}
             </div>
           </div>
         </div>
