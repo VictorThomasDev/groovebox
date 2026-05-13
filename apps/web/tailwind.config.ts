@@ -12,6 +12,15 @@ export default {
           900: '#7c2d12',
         },
       },
+      keyframes: {
+        'fade-up': {
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        'fade-up': 'fade-up 0.4s ease both',
+      },
     },
   },
   plugins: [],

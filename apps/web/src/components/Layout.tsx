@@ -1,35 +1,89 @@
-import { NavLink, Outlet } from 'react-router-dom';
-
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  isActive
-    ? 'text-orange-400 font-medium'
-    : 'text-gray-400 hover:text-white transition-colors';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { Marquee } from './Marquee';
+import { useAuthStore } from '../store';
 
 export function Layout() {
+  const { token, user, logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate('/');
+  }
+
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      <header className="border-b border-gray-800 px-6 py-4">
-        <nav className="flex items-center gap-8">
-          <span className="text-xl font-bold tracking-tight text-orange-400">
-            Groovebox
-          </span>
-          <NavLink to="/" end className={navLinkClass}>
-            Home
+    <>
+      <header className="topbar">
+        <div className="topbar-inner">
+          <NavLink to="/" className="brand">
+            <div className="brand-word">GROOVEBOX</div>
+            <div className="brand-tag">The beat of<br />your shelf</div>
           </NavLink>
-          <NavLink to="/collection" className={navLinkClass}>
-            Collection
-          </NavLink>
-          <NavLink to="/wishlist" className={navLinkClass}>
-            Wishlist
-          </NavLink>
-          <NavLink to="/stats" className={navLinkClass}>
-            Stats
-          </NavLink>
-        </nav>
+
+          <nav className="nav">
+            {token && (
+              <>
+                <NavLink to="/collection" className={({ isActive }) => isActive ? 'active' : ''}>
+                  Collection
+                </NavLink>
+                <NavLink to="/wishlist" className={({ isActive }) => isActive ? 'active' : ''}>
+                  Wishlist
+                </NavLink>
+                <NavLink to="/stats" className={({ isActive }) => isActive ? 'active' : ''}>
+                  Stats
+                </NavLink>
+              </>
+            )}
+          </nav>
+
+          <div className="topbar-meta">
+            <div className="sub" style={{ gap: 12 }}>
+              {token && user ? (
+                <>
+                  <span style={{ fontWeight: 600 }}>{user.username}</span>
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      background: 'rgba(255,255,255,0.2)', border: 'none', color: 'inherit',
+                      fontFamily: 'Inter, sans-serif', fontWeight: 600, fontSize: 12,
+                      letterSpacing: '0.1em', textTransform: 'uppercase',
+                      padding: '4px 10px', cursor: 'pointer',
+                    }}
+                  >
+                    Log out
+                  </button>
+                </>
+              ) : (
+                <>
+                  <NavLink
+                    to="/login"
+                    style={{ color: 'inherit', textDecoration: 'none', fontWeight: 600, fontSize: 13, letterSpacing: '0.1em', textTransform: 'uppercase' }}
+                  >
+                    Log in
+                  </NavLink>
+                  <NavLink
+                    to="/register"
+                    style={{
+                      background: 'rgba(255,255,255,0.2)', color: 'inherit', textDecoration: 'none',
+                      fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: 12,
+                      letterSpacing: '0.1em', textTransform: 'uppercase',
+                      padding: '6px 12px',
+                    }}
+                  >
+                    Register
+                  </NavLink>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
       </header>
-      <main className="mx-auto max-w-7xl p-6">
+
+      <main>
         <Outlet />
       </main>
-    </div>
+
+      <Marquee />
+    </>
   );
 }

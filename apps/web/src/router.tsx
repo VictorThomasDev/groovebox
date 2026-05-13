@@ -1,9 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Layout } from './components/Layout';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { HomePage } from './pages/HomePage';
+import { LoginPage } from './pages/LoginPage';
 import { CollectionPage } from './pages/CollectionPage';
 import { WishlistPage } from './pages/WishlistPage';
 import { StatsPage } from './pages/StatsPage';
+import { RegisterPage } from './pages/RegisterPage';
 
 export const router = createBrowserRouter([
   {
@@ -11,9 +14,20 @@ export const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <HomePage /> },
-      { path: 'collection', element: <CollectionPage /> },
-      { path: 'wishlist', element: <WishlistPage /> },
-      { path: 'stats', element: <StatsPage /> },
+      { path: 'login', element: <LoginPage /> },
+      { path: 'register', element: <RegisterPage /> },
+      {
+        path: 'collection',
+        element: <ProtectedRoute><CollectionPage /></ProtectedRoute>,
+      },
+      {
+        path: 'wishlist',
+        element: <ProtectedRoute><WishlistPage /></ProtectedRoute>,
+      },
+      {
+        path: 'stats',
+        element: <ProtectedRoute><StatsPage /></ProtectedRoute>,
+      },
     ],
   },
 ]);
